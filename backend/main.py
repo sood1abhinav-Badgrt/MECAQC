@@ -6,7 +6,8 @@ import pandas as pd
 
 app = FastAPI()
 plantsDF = pd.read_csv("data/plants.csv")
-plants = plantsDF.to_dict('facilityID')
+plantsDF = plantsDF.set_index("facilityID")
+plants = plantsDF.to_dict("index")
 
 
 
