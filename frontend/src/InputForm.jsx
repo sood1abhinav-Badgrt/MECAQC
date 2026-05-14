@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {useEffect} from 'react';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -13,7 +14,6 @@ const FIELDS = [
   { name: 'baselineNOx',     label: 'Baseline NOₓ',       hint: 'short tons/yr',         placeholder: 'e.g. 227',     half: true, type: "number"  },
   { name: 'baselinePM25',    label: 'Baseline PM₂.₅',     hint: 'short tons/yr',         placeholder: 'e.g. 71.6',    half: true, type: "number"  },
   { name: 'baselineVOC',     label: 'Baseline VOC',       hint: 'short tons/yr',         placeholder: 'e.g. 4.1',     half: true, type: "number"  },
-  
   { name: 'baselineCO2',     label: 'Baseline CO₂',       hint: 'short tons/yr',         placeholder: 'e.g. 164046',  half: false, type: "number"},
 
 ];
@@ -103,7 +103,7 @@ const styles = {
   },
 };
 
-export default function InputForm({ setResults }) {
+export default function InputForm({ setResults, plantMeta }) {
   const [formData, setFormData] = useState({
     state: 'AL', capacity: '403', annualGeneration: '166714', heatInput: '1598916', SO2Rate: '1.10', operatingHours: '910',
     baselineSO2: '953', baselineNOx: '227', baselinePM25: '71.6', baselineVOC: '4.1', baselineCO2: '164046',
@@ -111,10 +111,28 @@ export default function InputForm({ setResults }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [focusedField, setFocusedField] = useState(null);
+  useEffect(() => {
+    if (!plantMeta) return;
+    console.log(plantMeta)
+    setFormData({
+        state: plantMeta.state,
+        capacity: plantMeta.capacity,
+        heatInput: plantMeta.heatInput,
+        annualGeneration: plantMeta.annualGeneration,
+        SO2Rate: plantMeta.so2Rate,
+        operatingHours: plantMeta.operatingHours,
+        baselineSO2: plantMeta.so2Mass,
+        baselineNOx: plantMeta.noxMass,
+        baselinePM25: plantMeta.pm25,
+        baselineVOC: plantMeta.voc,
+        baselineCO2: plantMeta.co2Mass,
+    });
+    }, [plantMeta]);
 
   function handleChange(e) {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   }
+
 
   function handleReset() {
     setFormData({

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import InputForm from './InputForm';
 import ResultsPanel from './ResultsPanel';
+import Map from './Map';
 
 export default function App() {
   const [results, setResults] = useState(null);
@@ -11,7 +12,10 @@ export default function App() {
     setPlantMeta(meta);
   }
 
+  
+
   return (
+    
     <div style={{
       minHeight: '100vh',
       background: '#18161A',
@@ -52,7 +56,8 @@ export default function App() {
     gap: 16, 
     alignItems: 'start',
   }}>
-        <InputForm setResults={handleResults} />
+        <Map onResults={handleResults} />
+        <InputForm setResults={handleResults} plantMeta={plantMeta} />
         {results && <ResultsPanel results={results} plantMeta={plantMeta} />}
     </div>
       </div>
