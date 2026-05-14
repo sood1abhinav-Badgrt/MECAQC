@@ -56,8 +56,8 @@ export default function App() {
     gap: 16, 
     alignItems: 'start',
   }}>
-        <Map/>
-        <InputForm setResults={handleResults} />
+        <Map onResults={handleResults} />
+        <InputForm setResults={handleResults} plantMeta={plantMeta} />
         {results && <ResultsPanel results={results} plantMeta={plantMeta} />}
     </div>
       </div>

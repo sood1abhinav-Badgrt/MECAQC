@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 const API_URL = import.meta.env.VITE_API_URL;
 
 
-export default function Map()
+export default function Map({onResults})
 {
     const mapRef = useRef(null);
     useEffect(() => {
@@ -27,10 +27,14 @@ export default function Map()
             headers: { 'Content-Type': 'application/json' },
             });
             const data = await response.json();
-            console.log(data);
-            for(let plant of Object.values(data))
+            for (let [id, plant] of Object.entries(data))
             {
-                L.marker([plant.Latitude, plant.Longitude]).addTo(map);
+                
+                L.marker([plant.Latitude, plant.Longitude]).addTo(map).on('click', async () => {
+                    const res = await fetch(`${API_URL}/plants/${id}`);
+                    const plantData = await res.json();
+                    onResults(null, plantData);
+                });
             }
         }
         loadMap();
