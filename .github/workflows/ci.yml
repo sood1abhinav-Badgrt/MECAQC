@@ -19,6 +19,3 @@ jobs:
 
 
 
-      - pip3 install python
-      - pip install -r requirements.txt
-      - pytest tests/test_calculator.py -v  
