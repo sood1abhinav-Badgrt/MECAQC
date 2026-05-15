@@ -12,7 +12,12 @@ export default function App() {
     setPlantMeta(meta);
   }
 
-  
+  function handleReset()
+  {
+    setResults(null);
+    setPlantMeta(null);
+  }
+
 
   return (
     
@@ -49,15 +54,27 @@ export default function App() {
        }}>
       Wu et al. 2024
     </span>
+    {results && <button onClick={handleReset} style={
+        {
+          
+          fontSize: 11,
+          color: '#5cac8e',
+          background: 'none',
+          border: 'none',
+          cursor: 'pointer',
+          textDecoration: 'underline',
+          fontFamily: 'inherit',
+        }
+      }>← New plant</button>}
   </div>
   <div style={{ 
     display: 'grid', 
-    gridTemplateColumns: results ? '290px 1fr' : '1fr', 
+    gridTemplateColumns: '1fr 1fr', 
     gap: 16, 
     alignItems: 'start',
   }}>
         <Map onResults={handleResults} />
-        <InputForm setResults={handleResults} plantMeta={plantMeta} />
+        {!results && <InputForm setResults={handleResults} plantMeta={plantMeta} onReset = {handleReset}/>}
         {results && <ResultsPanel results={results} plantMeta={plantMeta} />}
     </div>
       </div>
